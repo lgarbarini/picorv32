@@ -1,10 +1,10 @@
 
-VIVADO_BASE = /opt/Xilinx/Vivado/2018.2
+VIVADO_BASE = /tools/Xilinx/Vivado/2019.2
 VIVADO = $(VIVADO_BASE)/bin/vivado
 XVLOG = $(VIVADO_BASE)/bin/xvlog
 XELAB = $(VIVADO_BASE)/bin/xelab
 GLBL = $(VIVADO_BASE)/data/verilog/src/glbl.v
-TOOLCHAIN_PREFIX = riscv32-unknown-elf-
+TOOLCHAIN_PREFIX = riscv64-unknown-elf-
 
 export VIVADO
 
@@ -41,7 +41,7 @@ sim_system:
 	$(XELAB) -L unifast_ver -L unisims_ver -R system_tb glbl
 
 firmware.hex: firmware.S firmware.c firmware.lds
-	$(TOOLCHAIN_PREFIX)gcc -Os -ffreestanding -nostdlib -o firmware.elf firmware.S firmware.c \
+	$(TOOLCHAIN_PREFIX)gcc -march=rv32imac -mabi=ilp32 -Os -ffreestanding -nostdlib -o firmware.elf firmware.S firmware.c \
 		 --std=gnu99 -Wl,-Bstatic,-T,firmware.lds,-Map,firmware.map,--strip-debug -lgcc
 	$(TOOLCHAIN_PREFIX)objcopy -O binary firmware.elf firmware.bin
 	python3 ../../firmware/makehex.py firmware.bin 4096 > firmware.hex

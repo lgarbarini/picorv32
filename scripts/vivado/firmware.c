@@ -40,4 +40,8 @@ void main()
 			break;
 		}
 	puts(message);
+	// while (1) {
+	// 	for (int i = 0; i < 1000; i++) *(volatile char*)0x10000000 = 0xFF;
+	// 	for (int i = 0; i < 1000; i++) *(volatile char*)0x10000000 = 0x00;
+	// }
 }
